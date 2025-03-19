@@ -127,7 +127,7 @@ def read_data(file_path):
         return data
 
 small_data = read_data('CS170_Small_Data__111.txt')
-large_data = read_data('CS170_Large_Data__12.txt')
+large_data = read_data('CS170_Large_Data__25.txt')
 
 
 def main():
