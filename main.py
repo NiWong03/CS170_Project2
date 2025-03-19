@@ -134,7 +134,7 @@ def main():
     print("Welcome to my Feature Selection algorithm.")
     userint = input("Type in the name of the file to test: ")
 
-    if userint == "CS170_Large_Data__12.txt":
+    if userint == "CS170_Large_Data__25.txt":
         data = large_data
     else:
         data = small_data
