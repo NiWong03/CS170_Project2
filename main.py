@@ -13,7 +13,7 @@ def leave_one_out_cross_validation(data, current_set,feature_to_add):
             for i in range(len(copy_data)):
                 copy_data[i][j] = 0
                 
-    # print("features:", features)
+
 
     num_classified_correctly = 0
     for i in range(len(copy_data)):
@@ -36,10 +36,6 @@ def leave_one_out_cross_validation(data, current_set,feature_to_add):
         if label_object_to_classify == nearest_neighbor_label:
             num_classified_correctly += 1
     accuracy = num_classified_correctly / len(copy_data)
-
-        # print(f"Object {i} is in class {label_object_to_classify}")
-        # print(f"Its nearest neighbor is {nearest_neighbor_location} which is in class {nearest_neighbor_label} ")
-
     
     # accuracy = rand.random()
     return accuracy
@@ -71,7 +67,6 @@ def forward_feature_selection(data):
         if add_feature is not None:
             current_set.append(add_feature)
             feature_set_str = '{' + ', '.join(map(str, current_set)) + '}'
-            # print(f'Feature Set {current_set} was best, accuracy of {best_so_far_accuracy}')
             print('Feature Set ' + feature_set_str + ' with accuracy of ' + str(best_so_far_accuracy))
 
 
@@ -86,7 +81,7 @@ def backward_feature_selection(data):
     print("Beginning Backward Elimination Algorithm")
     current_set = list(range(1, len(data[0])))  # Start with all features
     best_feature = current_set[:]
-    best_accuracy = leave_one_out_cross_validation(data, current_set, 0)  # Initial accuracy with all features
+    best_accuracy = leave_one_out_cross_validation(data, current_set, 0)  # initial accuracy with all features
     feature_set_str = '{' + ', '.join(map(str, current_set )) + '}'
 
     print('Considering all features ' + feature_set_str + ' with accuracy of ' + str(best_accuracy))
@@ -94,7 +89,7 @@ def backward_feature_selection(data):
     for i in range(1, len(data[0]) ):
         # print(f'On the {i}th level of the search tree')
         best_so_far_accuracy = 0
-        remove_feature = None  # Initialize remove_feature to None
+        remove_feature = None  # initialize remove_feature to None
 
         for j in range(1, len(data[0])-1):
             if j in current_set:  
@@ -104,13 +99,11 @@ def backward_feature_selection(data):
                 # make copy to evaluate new set with removed feature
                 accuracy = leave_one_out_cross_validation(data, temp_set, None)
                 #pass in new set, None since deleting features not adding
-                # print(f'-- Considering features {temp_set} with accuracy of {accuracy}')
                 feature_set_str = '{' + ', '.join(map(str, current_set )) + '}'
                 print('Using Feature(s) ' + feature_set_str + ' with accuracy of ' + str(accuracy))
 
                 if accuracy > best_so_far_accuracy:
                     best_so_far_accuracy = accuracy
-                    # print(f'Accuracy is {accuracy} and best_so_far accuracy is {best_so_far_accuracy}')
                     remove_feature = j
 
         if remove_feature is not None:
