@@ -42,7 +42,7 @@ def leave_one_out_cross_validation(data, current_set,feature_to_add):
 
 
 def forward_feature_selection(data):
-    print("Beginning Forward Selection Algorithm")
+    print("Beginning Search.")
     current_set = []
     best_feature = []
     best_accuracy = 0
@@ -56,10 +56,10 @@ def forward_feature_selection(data):
             if j not in current_set:  
                 # print(f'Considering adding the {j}th feature')
                 accuracy = leave_one_out_cross_validation(data, current_set, j)
-                # print(f'-- Considering features {current_set + [j]} with accuracy of {accuracy}')
+                # print(f'-- Considering features {current_set + [j]} accuracy is {accuracy}')
                 feature_set_str = '{' + ', '.join(map(str, current_set + [j])) + '}'
                 # turn set into string in order to get curly brackets for output
-                print('Using Feature(s) ' + feature_set_str + ' with accuracy of ' + str(accuracy))
+                print('Using Feature(s) ' + feature_set_str + ' accuracy is ' + str(accuracy))
                 if accuracy > best_so_far_accuracy:
                     best_so_far_accuracy = accuracy
                     add_feature = j
@@ -67,7 +67,7 @@ def forward_feature_selection(data):
         if add_feature is not None:
             current_set.append(add_feature)
             feature_set_str = '{' + ', '.join(map(str, current_set)) + '}'
-            print('Feature Set ' + feature_set_str + ' with accuracy of ' + str(best_so_far_accuracy))
+            print('Feature Set ' + feature_set_str + ' was best, accuracy is ' + str(best_so_far_accuracy))
 
 
         if best_so_far_accuracy > best_accuracy:
@@ -84,7 +84,7 @@ def backward_feature_selection(data):
     best_accuracy = leave_one_out_cross_validation(data, current_set, 0)  # initial accuracy with all features
     feature_set_str = '{' + ', '.join(map(str, current_set )) + '}'
 
-    print('Considering all features ' + feature_set_str + ' with accuracy of ' + str(best_accuracy))
+    print('Considering all features ' + feature_set_str + ' accuracy is ' + str(best_accuracy))
     
     for i in range(1, len(data[0]) ):
         # print(f'On the {i}th level of the search tree')
@@ -100,7 +100,7 @@ def backward_feature_selection(data):
                 accuracy = leave_one_out_cross_validation(data, temp_set, None)
                 #pass in new set, None since deleting features not adding
                 feature_set_str = '{' + ', '.join(map(str, current_set )) + '}'
-                print('Using Feature(s) ' + feature_set_str + ' with accuracy of ' + str(accuracy))
+                print('Using Feature(s) ' + feature_set_str + ' accuracy is ' + str(accuracy))
 
                 if accuracy > best_so_far_accuracy:
                     best_so_far_accuracy = accuracy
@@ -115,7 +115,7 @@ def backward_feature_selection(data):
             best_feature = current_set[:]
 
     best_set_str = '{' + ', '.join(map(str, best_feature )) + '}'
-    print('Finished search!! The best feature subset is ' + best_set_str + ' which has an accuracy of' + str(best_accuracy))
+    print('Finished search!! The best feature subset is ' + best_set_str + ' which has an accuracy of ' + str(best_accuracy))
 
 
 # data was being read as a string, converted to arrays
@@ -139,6 +139,13 @@ def main():
     else:
         data = small_data
     userint = input("Type the number of the algorithm you want to run. \n 1) Forward Selection \n 2) Backward Elimination \n")
+    
+
+    print("This dataset has", len(data[0])-1, "features (not including the class attribute), with", len(data), "instances.")
+    
+    # Pass in current set with all features
+    full_set_of_features = list(range(1, len(data[0])))
+    print("Running nearest neighbor with all", len(data[0])-1, "features, using 'leave-one-out' evaluation, I get an accuracy of", leave_one_out_cross_validation(data, full_set_of_features, 0))
     
     if userint == "1":
         forward_feature_selection(data)   
